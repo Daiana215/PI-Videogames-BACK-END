@@ -20,7 +20,7 @@ router.get('/', async(req, res) => {
     }
     catch(e){
         res.status(404).send('Ups! Sorry, there was an error creating a genres :(')
-    }
+    };
 });
 
 
