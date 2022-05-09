@@ -6,10 +6,28 @@ const {
   DB_USER, DB_PASSWORD, DB_HOST, DB_NAME
 } = process.env;
 
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
+//postgres://wqzfhyrdmnzavp:2d830636a9a5f06b145a8fa9a88e482d9c321a06f344b879df43e0ea31f9848b@ec2-3-224-125-117.compute-1.amazonaws.com:5432/d9oppotlqktckq
+
+const sequelize = 
+process.env.NODE_ENV === "production"
+? new Sequelize(process.env.DATABASE_URL, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
-});
+  dialectOptions: {
+    ssl: {
+      require: true,
+      // Ref.: https://github.com/brianc/node-postgres/issues/2009
+      rejectUnauthorized: false,
+    },
+    keepAlive: true,
+  },
+  ssl: true,
+})
+: new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`, {
+    logging: false, // set to console.log to see the raw SQL queries
+    native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  });
+  
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
