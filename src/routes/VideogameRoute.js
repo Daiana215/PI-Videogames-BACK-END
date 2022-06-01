@@ -76,29 +76,4 @@ router.post('/', async(req, res) => {
 });
 
 
-router.delete('/:id', async(req, res) => {
-    let { id } = req.params;
-    
-    try{
-        const allId = await getDB();
-        let gameid = allId.findOne(el => el.id === id);
-        
-        Videogame.destroy({
-            where: {
-                id: id
-            }
-        }).then(resp => {
-            resp
-            ? res.status(200, '/videogames')
-            : res.status(404).send('Ups! Videogame not found.')
-        })
-
-        res.status(200).json(gameid);
-    }
-    catch(e){
-        res.status(404).send('Videogame not found.');
-    };
-});
-
-
 module.exports = router;
