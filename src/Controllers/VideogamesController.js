@@ -1,6 +1,7 @@
 const axios = require('axios');
 const { Videogame, Genre } = require('../db');
 const { API_KEY } = process.env;
+const notFound = require('./background_image/404.jpg');
 
 
 const getInfo = async() => {
@@ -42,7 +43,7 @@ const getInfoByName = async(game) => {
         getGamesNames = getGamesNames.data.results.map(el => {
             return {
                 id: el.id,
-                image: el.background_image?el.background_image:'https://besthqwallpapers.com/Uploads/8-3-2020/124076/thumb2-404-wallpaper-not-found-violet-sign-4k-violet-brickwall-404-wallpaper-not-found-violet-blank-display.jpg',
+                image: el.background_image?el.background_image:notFound,
                 name: el.name,
                 genres: el.genres.map(el => el.name),
             }}
